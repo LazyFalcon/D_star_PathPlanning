@@ -6,7 +6,6 @@ function outState = FDSUpdateMap(state, newMap)
     
         startPos = state.startPos;
         endPos =  state.endPos;
-        map = newMap;
         pattern = state.pattern;
         ucc = state.ucc;
         graph = state.graph;
@@ -22,8 +21,10 @@ function outState = FDSUpdateMap(state, newMap)
         stack2= java.util.PriorityQueue(180247, comparator);
         comparator = pcmp;
         stack3= java.util.PriorityQueue(180247, comparator);
-        
-        difference = newMap - state.map;
+
+				map = newMap;
+							
+        difference = map - state.map;
         %% ---------------addObstacle
         [x, y] = find(difference == -1);
         indices = [x,y];
@@ -74,7 +75,7 @@ function outState = FDSUpdateMap(state, newMap)
         end
         outState = state;
         outState.graph = graph;
-        outState.map = newMap;
+        outState.map = map;
         outState.stack = stack;
 %%
 function out = inQ(s) 

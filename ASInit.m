@@ -1,4 +1,4 @@
-function state = ASInit(startPos, endPos, map, scalling)
+function state = ASInit(startPos, endPos, map)
   
 %% generate shape pattern
     radius = 10/scalling;
@@ -26,11 +26,12 @@ function state = ASInit(startPos, endPos, map, scalling)
         1 -1 0 0;
         -1 1 0 0;
     ]';
-    %% prepare all data
-    state.map = map;
+
+%% prepare all data
     
-    state.startPos = [floor((startPos(2:-1:1)+[24;24])/scalling); 0; 0];
-    state.endPos = [floor((endPos(2:-1:1)+[24;24])/scalling); 0; 0];
+		state.map = map;
+    state.startPos = [startPos(2:-1:1) 0; 0];
+    state.endPos = [endPos(2:-1:1); 0; 0];
     
     state.pattern = shapePattern';
     state.ucc = neighbours;

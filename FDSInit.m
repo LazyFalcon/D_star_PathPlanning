@@ -1,8 +1,8 @@
 function out = FDSInit(startPos, endPos, map, scalling)
-    radius = 10/4;
-%     radius = 10;
+   
+%% generate shape pattern
+    radius = 10/scalling;
     mat = zeros(radius*2,radius*2);
-
     dista = @(a,b) sqrt(a*a+b*b);
 
     shapePattern = [];
@@ -15,7 +15,6 @@ function out = FDSInit(startPos, endPos, map, scalling)
             end
         end
     end
-    
     neighbours = [
         0 1 0 0;
         -1 0 0 0;
@@ -26,13 +25,16 @@ function out = FDSInit(startPos, endPos, map, scalling)
         1 -1 0 0;
         -1 1 0 0;
     ]';
-   
-    out.map = map;
+		
+
+%% prepare all data
     
-    out.startPos = [floor((startPos(2:-1:1)+[24;24])/scalling); 0; 0];
-    startPos = [floor((startPos(2:-1:1)+[24;24])/scalling); 0; 0];
-    out.endPos = [floor((endPos(2:-1:1)+[24;24])/scalling); 0; 0];
+		state.map = map;
+    state.startPos = [startPos(2:-1:1) 0; 0];
+    state.endPos = [endPos(2:-1:1); 0; 0];
+    startPos = out.startPos;
     
+		out.sacalling = scalling;
     out.pattern = shapePattern';
     out.ucc = neighbours;
     out.height = ceil(length(out.map(:,1)));
