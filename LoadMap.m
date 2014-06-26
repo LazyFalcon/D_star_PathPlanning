@@ -3,12 +3,17 @@ function out = LoadMap(name, scalling)
     if nargin ==1
         scalling = 1;
     end
-    [robot_xy,target_xy,out.map] = segmentation(name,0.1,0.9,0.5);
+    [robot_xy,target_xy,map] = segmentation(name,0.1,0.9,0.5);
     if scalling ~= 1
-        out.map = simplifyMap(out.map, scalling);
+        map = simplifyMap(map, scalling);
     end
-    out.start = robot_xy;
-    out.goal = target_xy;
+		
+		[a,b] = size(map);
+		out.map = zeros(a+10, b+10);
+		out.map(5:end-6, 5:end-6) = map;
+		
+    out.start = floor(robot_xy/scalling) + [5,5];
+    out.goal = floor(target_xy/scalling) + [5,5];
 end
 
 

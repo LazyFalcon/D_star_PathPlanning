@@ -50,8 +50,8 @@ function out = FDSInit(startPos, endPos, map, scalling)
     out.comparator = DStarcmp;
     out.stack = java.util.PriorityQueue(180247, out.comparator);
 
-    setRhs(out.endPos, 0);
-    setg(out.endPos, 0);
+    setk(out.endPos, 0);
+    seth(out.endPos, 0);
     setQ(out.endPos);
     out.endPos(3:4) = [heur(out.endPos); 0];
     add(out.stack, out.endPos);
@@ -61,10 +61,10 @@ function out = FDSInit(startPos, endPos, map, scalling)
     function setQ(s)
          out.graph(s(1), s(2), 3) = 1;
     end
-    function setg(s, val)
+    function seth(s, val)
         out.graph(s(1), s(2),1) = val;
     end
-    function setRhs(s, val)
+    function setk(s, val)
         out.graph(s(1), s(2),2) = val;
     end
     function out = heur(s) 

@@ -1,26 +1,22 @@
-function out = PlotPath(state, scalling, mapName)
+function out = PlotPath(state, scalling, )
 % uses B-spline interpolation    
+
+
+    if nargin ==1
+        scalling = 1;
+    end
+
     path = state.path';
     path(:,3) = 1;
     path(:,4) = 1;
-
-    if nargin <3
-        scalling = 1;
-        imag = state.map;
-    else
-        tmp = LoadMap(  strcat(mapName, '.png'), 1);
-        imag = tmp.map;
-    end
-
-    
     if scalling ~= 1
-        path(:,1) = path(:,1)-2.5;
-        path(:,2) = path(:,2)-2.5;
         pathInterpolated = BSpline(path*scalling);
+    %     pathInterpolated = BSpline(path);
     else
         pathInterpolated = path;
     end
     %%5
+    imag = state.map;
     for it = pathInterpolated'
         a = round(it);
         imag(a(1), a(2)) = 0.6;

@@ -13,17 +13,17 @@ end
 
 %% initial search
 DSL = 0;
-FDS = 0;
-AS = 1;
+FDS = 1;
+AS = 0;
 clc
 close all
 tic 
     if DSL
-        state = DSLInit(start, goal, maps{2}, 4);
+        state = DSLInit(start, goal, maps{1}, 4);
         state = DSLComputePath(state);
     elseif FDS
-        state = FDSInit(start, goal, maps{1}, 4);
-        state = FDSComputePath(state, 19150);
+        state = FDSInit(start, goal, maps{2}, 4);
+        state = FDSComputePath(state);
     elseif AS
         state = ASInit(start, goal, maps{1}, 4);
         state = ASComputePath(state);
@@ -32,29 +32,38 @@ tic
 toc
 gah = state;
 %% update map
-state.kM = -100;
+state.kM = 50;
+close all
 tic
     if DSL
         if bool 
             bool = 0;
-            state = DSLUpdateMap(state, maps{3});
+            state = DSLUpdateMap(state, maps{2});
         else
             state = DSLComputePath(state);
         end
-    else
+    elseif FDS
         if bool 
             bool = 0;
-            state = FDSUpdateMap(state, maps{4}); 
+            state = FDSUpdateMap(state, maps{1}); 
             state.kM = 50;
         else
             state = FDSComputePath(state);
         end
     end
 toc
-
+a = state.graph(:,:,1);
+a(a(:,:)~=inf) = 0.3;
+a(a(:,:)==inf) = 0;
+a(state.map(:,:)==0) = 0.2;
+b = state.graph(:,:,3);
+b( state.map(:,:)==0 ) = 0;
+b( state.graph(:,:,2)==inf ) = 0;
+b = b*0.7;
+imshow(b+a, 'Border', 'tight')
 %% resolve path 
     state.path = ResolvePath(state);         
-    resp = PlotPath(state, 1);
+    resp = PlotPath(state, 4, 'a');
 
 %% show A-star graph
 a = state.graph(:,:,1);
@@ -78,7 +87,7 @@ b = state.graph(:,:,3);
 b( state.map(:,:)==0 ) = 0;
 b( state.graph(:,:,2)==inf ) = 0;
 b = b*0.7;
-imshow(b+a)
+imshow(b+a, 'Border', 'tight')
 
 
 

@@ -1,4 +1,4 @@
-function state = ASInit(startPos, endPos, map)
+function state = ASInit(startPos, endPos, map, scalling)
   
 %% generate shape pattern
     radius = 10/scalling;
