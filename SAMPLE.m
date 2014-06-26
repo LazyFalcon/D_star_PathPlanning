@@ -4,8 +4,12 @@
 %% load maps
 mapsNames = {'a', 'e', 'b', 'c','map01'};
 maps = {};
+% zalecanym skalowaniem jest 1 lub 4, w przypadku pozosta³ych interpolacja
+% nie dzia³a w³aœciwie, wynika to z doboru parametrów w funkcji
+% interpoluj¹cej
+scalling = 4;
 for i=1:1: length(mapsNames)
-        tmp = LoadMap(  strcat(mapsNames{i}, '.png'), 4);
+        tmp = LoadMap(  strcat(mapsNames{i}, '.png'), scalling);
         start = tmp.start';
         goal = tmp.goal';
     maps{end+1} = tmp.map;
@@ -13,19 +17,19 @@ end
 
 %% initial search
 DSL = 0;
-FDS = 1;
-AS = 0;
+FDS = 0;
+AS = 1;
 clc
 close all
 tic 
     if DSL
-        state = DSLInit(start, goal, maps{1}, 4);
+        state = DSLInit(start, goal, maps{1}, scalling);
         state = DSLComputePath(state);
     elseif FDS
-        state = FDSInit(start, goal, maps{2}, 4);
+        state = FDSInit(start, goal, maps{2}, scalling);
         state = FDSComputePath(state);
     elseif AS
-        state = ASInit(start, goal, maps{1}, 4);
+        state = ASInit(start, goal, maps{1}, scalling);
         state = ASComputePath(state);
     end
     bool = 1;
@@ -63,7 +67,7 @@ b = b*0.7;
 imshow(b+a, 'Border', 'tight')
 %% resolve path 
     state.path = ResolvePath(state);         
-    resp = PlotPath(state, 4, 'a');
+    resp = PlotPath(state, scalling, 'a');
 
 %% show A-star graph
 a = state.graph(:,:,1);
