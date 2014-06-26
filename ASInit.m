@@ -29,8 +29,8 @@ function state = ASInit(startPos, endPos, map)
 
 %% prepare all data
     
-		state.map = map;
-    state.startPos = [startPos(2:-1:1) 0; 0];
+	state.map = map;
+    state.startPos = [startPos(2:-1:1); 0; 0];
     state.endPos = [endPos(2:-1:1); 0; 0];
     
     state.pattern = shapePattern';

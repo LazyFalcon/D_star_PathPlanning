@@ -12,18 +12,13 @@ function outState = FDSUpdateMap(state, newMap)
         kM = state.kM;
         SQRT2 = sqrt(2)-1;
         stack = state.stack;
-        imag = map;
-        i1 = map;
-        i2 = map;
-            
         
         comparator = pcmp;
         stack2= java.util.PriorityQueue(180247, comparator);
         comparator = pcmp;
         stack3= java.util.PriorityQueue(180247, comparator);
 
-				map = newMap;
-							
+        map = newMap;	
         difference = map - state.map;
         %% ---------------addObstacle
         [x, y] = find(difference == -1);
