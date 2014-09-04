@@ -20,6 +20,7 @@ function outState = FDSUpdateMap(state, newMap)
 
         map = newMap;	
         difference = map - state.map;
+        state.map = map;
         %% ---------------addObstacle
         [x, y] = find(difference == -1);
         indices = [x,y];

@@ -8,6 +8,7 @@ function outState = DSLUpdateMap(state, newMap)
         kM = state.kM;
         SQRT2 = sqrt(2)-1;
         stack = state.stack;
+				map = newMap;
         imag = map;
         i1 = map;
         i2 = map;
@@ -18,9 +19,9 @@ function outState = DSLUpdateMap(state, newMap)
         comparator = pcmp;
         stack3= java.util.PriorityQueue(180247, comparator);
         
-				map = newMap;
 							
         difference = map - state.map;
+        state.map = map;
         %% ---------------addObstacle
         [x, y] = find(difference == -1);
         indices = [x,y];
@@ -151,6 +152,19 @@ function outState = DSLUpdateMap(state, newMap)
         outState.map = map;
         outState.stack = stack;
 %%
+    function out = test_es(u)
+        out = newMap(u(1), u(2)) ~=0;
+    end
+    function out = test(s) % true if available
+        out = true;
+        for n = pattern
+            pos = s + n;
+            if map(pos(1), pos(2)) == 0
+                out = false;
+                return
+            end
+        end
+    end
     function out = inQ(s) 
         out = graph(s(1), s(2), 3);
     end

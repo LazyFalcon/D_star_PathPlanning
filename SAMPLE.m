@@ -1,12 +1,20 @@
-%% init java
+%% init java, run at begin, once
+% necessary to  load java files
 % clear java
 % javaclasspath(pwd)
+%% steps:
+% - load maps
+% - choose algorithm (DSL: D*Lite; FDS: Focussed D*, AS: A*)
+% - do initial search
+% -(optional) resolve path
+% - update map
+% - search in updated map
+% - resolve path
+
 %% load maps
 mapsNames = {'a', 'e', 'b', 'c','map01'};
 maps = {};
-% zalecanym skalowaniem jest 1 lub 4, w przypadku pozosta³ych interpolacja
-% nie dzia³a w³aœciwie, wynika to z doboru parametrów w funkcji
-% interpoluj¹cej
+%scalling should be 1(original map) or 4(downscalled map for better performance)
 scalling = 4;
 for i=1:1: length(mapsNames)
         tmp = LoadMap(  strcat(mapsNames{i}, '.png'), scalling);
@@ -17,8 +25,9 @@ end
 
 %% initial search
 DSL = 0;
-FDS = 0;
-AS = 1;
+FDS = 1;
+AS = 0;
+bool = 0;
 clc
 close all
 tic 
@@ -26,7 +35,7 @@ tic
         state = DSLInit(start, goal, maps{1}, scalling);
         state = DSLComputePath(state);
     elseif FDS
-        state = FDSInit(start, goal, maps{2}, scalling);
+        state = FDSInit(start, goal, maps{1}, scalling);
         state = FDSComputePath(state);
     elseif AS
         state = ASInit(start, goal, maps{1}, scalling);
@@ -35,7 +44,7 @@ tic
     bool = 1;
 toc
 gah = state;
-%% update map
+%% update map, search in update map, run twice
 state.kM = 50;
 close all
 tic
@@ -49,25 +58,16 @@ tic
     elseif FDS
         if bool 
             bool = 0;
-            state = FDSUpdateMap(state, maps{1}); 
+            state = FDSUpdateMap(state, maps{2}); 
             state.kM = 50;
         else
             state = FDSComputePath(state);
         end
     end
 toc
-a = state.graph(:,:,1);
-a(a(:,:)~=inf) = 0.3;
-a(a(:,:)==inf) = 0;
-a(state.map(:,:)==0) = 0.2;
-b = state.graph(:,:,3);
-b( state.map(:,:)==0 ) = 0;
-b( state.graph(:,:,2)==inf ) = 0;
-b = b*0.7;
-imshow(b+a, 'Border', 'tight')
-%% resolve path 
+%% resolve path, insert map name here if you want to get image in original size when map was downscalled
     state.path = ResolvePath(state);         
-    resp = PlotPath(state, scalling, 'a');
+    resp = PlotPath(state, scalling, 'e');
 
 %% show A-star graph
 a = state.graph(:,:,1);
