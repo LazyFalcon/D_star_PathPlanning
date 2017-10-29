@@ -12,3 +12,6 @@ S. Koening : Fast Replanning for navigation in unknown terrain , Transactions on
 M. Likhachev, S. Koening : Incremental replanning for mapping, Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Vol. 1
 
 A. Stentz : Focussed D*
+====================
+
+To run sample, first you have to exectute 'javaclasspath(pwd);'. 
